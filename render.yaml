@@ -1,0 +1,48 @@
+# Render Blueprint: one free Node web service that serves the app page and the /api server together.
+# Render → New → Blueprint → pick this repo. Keys marked `sync: false` are asked for once in the Render
+# dashboard (never put them in this file or in the repo).
+services:
+  - type: web
+    name: arch-prompt-studio
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm ci && npm run build:single
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: '22'
+      # Render routes traffic to port 10000 by default; the server listens on API_PORT
+      - key: API_PORT
+        value: '10000'
+      - key: TOKEN_MARKUP
+        value: '1.2'
+      # --- secrets: filled in the Render dashboard ---
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: CLOUDFLARE_ACCOUNT_ID
+        sync: false
+      - key: CLOUDFLARE_API_TOKEN
+        sync: false
+      - key: POLLINATIONS_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: OMISE_PUBLIC_KEY
+        sync: false
+      - key: OMISE_SECRET_KEY
+        sync: false
+      - key: BILLING_EXEMPT_EMAILS
+        sync: false
+      - key: APP_PUBLIC_URL
+        sync: false
